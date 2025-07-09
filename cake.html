@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎂 Birthday Cake for XX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cake-base: #FF9BB3;
+      --cake-frosting: #FFD6DE;
+      --cake-shadow: #E88BA7;
+      --candle: linear-gradient(to bottom, #FFF, #EEE);
+      --flame: radial-gradient(circle, #FFEC00 0%, #FF7800 70%, transparent 100%);
+      --flame-glow: 0 0 15px #FF6600;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #fff0f5 0%, #fff9fb 100%);
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+      transition: background 2s ease;
+    }
+
+    body.starry-night {
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    }
+
+    #particles-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-image: url(/img/bg.jpg);
+      background-size: cover;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      transition: opacity 2s ease;
+    }
+
+    .cake-container {
+      position: relative;
+      width: 90%;
+      max-width: 400px;
+      margin: 20px auto;
+      perspective: 1000px;
+      transition: opacity 2s ease;
+    }
+
+    .cake {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      transform-style: preserve-3d;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .cake-layer {
+      position: absolute;
+      width: 100%;
+      height: 60px;
+      background: var(--cake-base);
+      border-radius: 10px;
+      box-shadow: 0 5px 0 var(--cake-shadow), inset 0 -10px 20px rgba(0,0,0,0.1);
+    }
+
+    .cake-layer.bottom {
+      bottom: 0;
+      height: 80px;
+    }
+
+    .cake-layer.middle {
+      bottom: 70px;
+      width: 90%;
+      left: 5%;
+    }
+
+    .cake-layer.top {
+      bottom: 130px;
+      width: 80%;
+      left: 10%;
+      height: 50px;
+    }
+
+    .frosting {
+      position: absolute;
+      width: 100%;
+      height: 20px;
+      background: var(--cake-frosting);
+      border-radius: 50%;
+      bottom: -10px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .frosting::before,
+    .frosting::after {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: var(--cake-frosting);
+      border-radius: 50%;
+      bottom: 5px;
+    }
+
+    .frosting::before {
+      left: 10%;
+    }
+
+    .frosting::after {
+      right: 10%;
+    }
+
+    .candle {
+      position: absolute;
+      width: 10px;
+      height: 50px;
+      background: var(--candle);
+      border-radius: 5px;
+      z-index: 10;
+      cursor: pointer;
+    }
+
+    .flame {
+      position: absolute;
+      width: 12px;
+      height: 20px;
+      background: var(--flame);
+      border-radius: 50% 50% 20% 20%;
+      top: -20px;
+      left: -1px;
+      box-shadow: var(--flame-glow);
+      opacity: 1;
+      transition: all 0.5s ease;
+      animation: flicker 1.5s infinite alternate;
+    }
+
+    .flame.out {
+      opacity: 0;
+      transform: scale(0);
+      animation: none;
+    }
+
+    .cake-message {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-family: 'Pacifico', cursive, sans-serif;
+      font-size: 22px;
+      color: #8B0000;
+      text-shadow: 1px 1px 2px #fff;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Starry Night Message Styles */
+    #final-wish {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+      overflow: hidden;
+      font-family: 'Dancing Script', cursive;
+      color: white;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 2s ease;
+    }
+
+    #final-wish.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #final-wish .stars {
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(ellipse at center, rgba(255,255,255,0.06) 0%, transparent 70%),
+                    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1.2" fill="white" opacity="0.4"/><circle cx="50" cy="30" r="1.5" fill="white" opacity="0.2"/><circle cx="80" cy="10" r="1.1" fill="white" opacity="0.5"/><circle cx="10" cy="70" r="1.3" fill="white" opacity="0.3"/><circle cx="90" cy="60" r="1" fill="white" opacity="0.4"/><circle cx="40" cy="90" r="1.4" fill="white" opacity="0.2"/></svg>') repeat;
+        background-size: 300px 300px;
+        animation: moveStars 150s linear infinite;
+        filter: blur(1px) brightness(1.1);
+        position: absolute;
+        z-index: 0;
+      }
+
+    @keyframes moveStars {
+  0% { background-position: 0 0; }
+  100% { background-position: -2000px 1500px; }
+}
+
+body.starry-night {
+  background: linear-gradient(to bottom, #0d1b2a, #1b263b, #415a77);
+  transition: background 2s ease-in-out;
+}
+
+
+
+    #final-wish .message {
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      max-width: 90%;
+    }
+
+    #final-wish .message p {
+      font-size: 2.2rem;
+      margin: 1.8rem 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 1s ease;
+    }
+
+    #final-wish .message p.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #final-wish .shooting-star {
+      position: absolute;
+      width: 2px;
+      height: 100px;
+      background: linear-gradient(to right, transparent, white, transparent);
+      top: 30%;
+      left: -50px;
+      transform: rotate(-30deg);
+      opacity: 0;
+      filter: blur(1px);
+      z-index: 1;
+    }
+
+    #final-wish .final-text {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #ffb6c1;
+      opacity: 0;
+      z-index: 2;
+      text-shadow: 0 0 10px rgba(255, 182, 193, 0.8);
+      margin-top: 2rem;
+      transition: opacity 3s ease;
+    }
+
+    .countdown {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 1.5rem;
+      color: white;
+      background: rgba(0,0,0,0.5);
+      padding: 10px 15px;
+      border-radius: 20px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .countdown.visible {
+      opacity: 1;
+    }
+
+  #intro-screen {
+  position: fixed;
+  z-index: 10000;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffe0f0, #ffe8f8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+  animation: pulse-bg 10s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-bg {
+  0% { background: linear-gradient(135deg, #ffe0f0, #ffe8f8); }
+  100% { background: linear-gradient(135deg, #ffc0e0, #fff0f9); }
+}
+
+.intro-content {
+  text-align: center;
+  max-width: 80%;
+  animation: scale-in 1.5s ease forwards;
+  opacity: 0;
+}
+
+@keyframes scale-in {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+#intro-screen .heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #ff99bb;
+  transform: rotate(45deg);
+  animation: floatHeart 12s linear infinite;
+}
+
+#intro-screen .heart::before,
+#intro-screen .heart::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #ff99bb;
+  border-radius: 50%;
+}
+
+#intro-screen .heart::before {
+  top: -10px;
+  left: 0;
+}
+
+#intro-screen .heart::after {
+  left: -10px;
+  top: 0;
+}
+
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0) rotate(45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+
+#start-button {
+  font-size: 1.5rem;
+  padding: 12px 24px;
+  margin-top: 20px;
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#start-button:hover {
+  background-color: #ff1493;
+}
+
+
+    @keyframes flicker {
+      0%, 100% { transform: scale(1) rotate(-2deg); opacity: 0.9; }
+      25% { transform: scale(1.05) rotate(0deg); opacity: 1; }
+      50% { transform: scale(0.95) rotate(2deg); opacity: 0.8; }
+      75% { transform: scale(1.02) rotate(-1deg); opacity: 0.95; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes moveStars {
+      from { background-position: 0 0; }
+      to { background-position: -1000px 500px; }
+    }
+
+    @keyframes shootStar {
+      0% { left: -50px; top: 30%; opacity: 0; }
+      10% { opacity: 1; }
+      100% { left: 100vw; top: 100vh; opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="intro-screen">
+  <div class="intro-content">
+    <h1> Babe, get ready to blow out the candles!  🎂</h1>
+    <p> Make sure the room is quiet, then blow out the candles for the mic. below when you're ready...</p>
+    <button id="start-button">Start the Celebration</button>
+  </div>
+</div>
+
+  <canvas id="particles-bg"></canvas>
+  
+  <div class="countdown">3</div>
+
+  <div class="cake-container">
+    <div class="cake">
+      <div class="cake-layer bottom"><div class="frosting"></div></div>
+      <div class="cake-layer middle"><div class="frosting"></div></div>
+      <div class="cake-layer top"><div class="frosting"></div></div>
+      <div class="cake-message">Happy xx, xxxx</div>
+    </div>
+  </div>
+
+  <!-- Starry Night Message -->
+  <div id="final-wish">
+    <div class="stars"></div>
+    <div class="message">
+      <p>xxxxxxxxxxxxxxxxxxxxxxxxx</p>
+      <p>xxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
+      <p>xxxxxxxxxxxxx</p>
+      <p>xxx</p>
+      <p>xxxxx</p>
+    </div>
+    <div class="shooting-star"></div>
+    <div class="final-text">I love you 🌠</div>
+  </div>
+
+  <style>
+  /* Enhanced Shooting Star Styles */
+  .shooting-star {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 
+      0 0 10px 3px rgba(255, 255, 255, 0.8),
+      0 0 20px 6px rgba(255, 215, 0, 0.6),
+      0 0 30px 9px rgba(255, 165, 0, 0.4);
+    top: 10%;
+    left: -100px;
+    opacity: 0;
+    filter: blur(0.5px);
+    z-index: 10;
+    transform: rotate(-15deg);
+  }
+
+  .shooting-star::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.8) 30%,
+      rgba(255,255,255,0) 100%);
+    transform-origin: left center;
+    animation: tail 3s ease-out 1;
+  }
+
+  @keyframes shootStar {
+    0% { 
+      transform: translateX(0) translateY(0) rotate(-15deg);
+      opacity: 0;
+    }
+    10% { 
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% { 
+      transform: translateX(100vw) translateY(50vh) rotate(-15deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes tail {
+    0% {
+      transform: scaleX(0);
+    }
+    30% {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scaleX(0);
+      opacity: 0;
+    }
+  }
+
+  /* Add this to your existing CSS */
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+  }
+
+  /* Apply to individual stars in your starfield */
+  .star {
+    animation: twinkle var(--duration) ease-in-out infinite;
+    animation-delay: var(--delay);
+  }
+</style>
+
+<script>
+  // Enhanced starfield initialization
+  function createStarfield() {
+    const container = document.querySelector('.stars');
+    const starCount = 200;
+    
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      
+      // Random positioning
+      const x = Math.random() * 100;
+      const y = Math.random() * 100;
+      const size = Math.random() * 1.5;
+      const duration = `${5 + Math.random() * 10}s`;
+      const delay = `${Math.random() * 5}s`;
+      
+      star.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        background: white;
+        border-radius: 50%;
+        top: ${y}%;
+        left: ${x}%;
+        opacity: 0;
+        --duration: ${duration};
+        --delay: ${delay};
+      `;
+      
+      container.appendChild(star);
+    }
+  }
+
+  // Enhanced shooting star trigger
+  function triggerShootingStar() {
+    const shootingStar = document.querySelector('.shooting-star');
+    
+    // Reset position
+    shootingStar.style.animation = 'none';
+    shootingStar.offsetHeight; // Trigger reflow
+    shootingStar.style.animation = 'shootStar 3s ease-out forwards';
+    
+    // Random delay for natural appearance
+    const delay = Math.random() * 30000 + 10000; // 10-40 seconds
+    setTimeout(triggerShootingStar, delay);
+  }
+
+  // Call these in your DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', () => {
+    createStarfield();
+    triggerShootingStar();
+  });
+</script>
+
+  <script>
+    // Particle animation
+    const canvas = document.getElementById("particles-bg");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    for (let i = 0; i < 80; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 4 + 1,
+        dx: (Math.random() - 0.5) * 0.5,
+        dy: (Math.random() - 0.5) * 0.5,
+        opacity: Math.random() * 0.5 + 0.3
+      });
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let p of particles) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 182, 193, ${p.opacity})`;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      }
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    function createFloatingHearts() {
+  const container = document.getElementById('intro-screen');
+  for (let i = 0; i < 20; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.style.left = `${Math.random() * 100}vw`;
+    heart.style.bottom = `-${Math.random() * 20 + 20}px`;
+    heart.style.animationDuration = `${10 + Math.random() * 10}s`;
+    heart.style.opacity = Math.random();
+    container.appendChild(heart);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  createFloatingHearts();
+});
+
+
+    // Cake and candles logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const cake = document.querySelector('.cake');
+      let candlesLit = 21;
+      let audioContext, analyser, microphone;
+      let dataArray, bufferLength;
+      const countdown = document.querySelector('.countdown');
+      
+      // Create candles
+      function createCandles() {
+        const rows = 3;
+        const candlesPerRow = 7;
+        const cakeWidth = cake.offsetWidth;
+        const spacing = cakeWidth / (candlesPerRow + 1);
+
+        for (let row = 0; row < rows; row++) {
+          for (let i = 0; i < candlesPerRow; i++) {
+            const candle = document.createElement('div');
+            candle.className = 'candle';
+
+            const left = spacing + (i * spacing);
+            const top = row === 0 ? 10 : row === 1 ? 50 : 90;
+            candle.style.left = `${left}px`;
+            candle.style.top = `${top}px`;
+
+            const flame = document.createElement('div');
+            flame.className = 'flame';
+            candle.appendChild(flame);
+            cake.appendChild(candle);
+
+            candle.addEventListener('click', () => extinguishCandle(flame));
+          }
+        }
+      }
+
+      function extinguishCandle(flame) {
+        if (!flame || flame.classList.contains('out')) return;
+        flame.classList.add('out');
+        candlesLit--;
+        if (candlesLit <= 0) {
+          celebrate();
+        }
+      }
+
+      function getActiveFlames() {
+        return Array.from(document.querySelectorAll('.flame:not(.out)'));
+      }
+
+      function blowOutRandomCandles(count = 2) {
+        const active = getActiveFlames();
+        for (let i = 0; i < count && active.length > 0; i++) {
+          const index = Math.floor(Math.random() * active.length);
+          extinguishCandle(active[index]);
+          active.splice(index, 1);
+        }
+      }
+
+      function celebrate() {
+        const msg = new SpeechSynthesisUtterance();
+      
+        
+        // Start 5-second countdown before showing final wish
+        startCountdown();
+      }
+      
+      // Start 5-second countdown
+      function startCountdown() {
+        let seconds = 3;
+        countdown.textContent = seconds;
+        countdown.classList.add('visible');
+        
+        const countdownInterval = setInterval(() => {
+          seconds--;
+          countdown.textContent = seconds;
+          
+          if (seconds <= 0) {
+            clearInterval(countdownInterval);
+            showFinalWish();
+          }
+        }, 1000);
+      }
+
+      function showFinalWish() {
+        // Hide countdown
+        countdown.classList.remove('visible');
+        
+        // Change background to starry night
+        document.body.classList.add('starry-night');
+        
+        // Hide cake and particles
+        document.querySelector('.cake-container').style.opacity = '0';
+        document.getElementById('particles-bg').style.opacity = '0';
+        
+        // Show final wish
+        const finalWish = document.getElementById('final-wish');
+        finalWish.classList.add('active');
+        
+        // Show messages with delays
+        const messages = document.querySelectorAll('#final-wish .message p');
+        messages.forEach((msg, index) => {
+          setTimeout(() => {
+            msg.classList.add('visible');
+          }, (index + 1) * 2000); // 2s between each message
+        });
+        
+        // Show shooting star after last message
+        setTimeout(() => {
+          const star = document.querySelector('.shooting-star');
+          star.style.animation = 'shootStar 3s ease-out forwards';
+        }, 9000);
+        
+        // Show final text after shooting star
+        setTimeout(() => {
+          document.querySelector('.final-text').style.opacity = '1';
+        }, 12000);
+      }
+
+      function initMicrophone() {
+        if (!navigator.mediaDevices) return;
+        
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            microphone = audioContext.createMediaStreamSource(stream);
+            microphone.connect(analyser);
+            analyser.fftSize = 256;
+            bufferLength = analyser.frequencyBinCount;
+            dataArray = new Uint8Array(bufferLength);
+            detectBlow();
+          })
+          .catch(err => {
+            console.error('Microphone access denied:', err);
+          });
+      }
+
+      function detectBlow() {
+        if (!analyser) return;
+        
+        analyser.getByteFrequencyData(dataArray);
+        let avg = dataArray.reduce((a, b) => a + b, 0) / bufferLength;
+        if (avg > 50) {
+          blowOutRandomCandles(2);
+        }
+        requestAnimationFrame(detectBlow);
+      }
+
+      document.getElementById('start-button').addEventListener('click', () => {
+      document.getElementById('intro-screen').style.display = 'none';
+      createCandles();
+      initMicrophone();
+      });
+
+    });
+  </script>
+</body>
+</html>
