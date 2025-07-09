@@ -51,7 +51,7 @@ A beautiful, interactive, and magical birthday celebration website — complete 
 ## 📷 Demo Preview
 
 You can view a working example here:  
-👉 [https://randillasith.github.io/birthday-bliss/](https://randillasith.github.io/birthday-bliss/)
+👉 [https://randillasith.myddns.me/](https://randillasith.myddns.me/)
 
 ---
 
