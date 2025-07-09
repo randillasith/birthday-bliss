@@ -38,7 +38,7 @@ A beautiful, interactive, and magical birthday celebration website — complete 
 
 1. **Clone or Download** this repo:
    ```bash
-   git clone https://github.com/your-username/birthday-celebration.git
+   git clone https://github.com/randillasith/birthday-bliss.git
    ```
 2. Add your images to the `/img` folder (e.g., `img1.jpg`, `img2.jpg`, etc.)
 3. Replace any placeholder texts in `index.html` and `cake.html` with your personal message.
@@ -51,7 +51,7 @@ A beautiful, interactive, and magical birthday celebration website — complete 
 ## 📷 Demo Preview
 
 You can view a working example here:  
-👉 [https://your-username.github.io/birthday-celebration/](https://your-username.github.io/birthday-celebration/)
+👉 
 
 ---
 
