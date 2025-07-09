@@ -1,12 +1,12 @@
 # 🎂 Birthday Celebration Web Experience
 
-A beautiful, interactive, and magical birthday celebration website — complete with countdown animation, floating hearts, glowing candles, and a starry-night wish scene. Designed for a unique and heartfelt surprise.
+A beautiful, interactive, and magical birthday celebration website — complete with a **live countdown**, floating hearts, glowing candles you can blow out, and a starry-night wish scene. Designed for a unique and heartfelt surprise.
 
 ---
 
 ## 🌟 Features
 
-- 🎉 Full-screen animated **birthday countdown**
+- ⏳ **Live countdown** to the birthday moment
 - ❤️ Heartbeat-style **canvas animation**
 - 🎂 Click or **blow-out candles** with microphone detection
 - 🌌 **Final wish** message under a starry night sky
@@ -51,7 +51,7 @@ A beautiful, interactive, and magical birthday celebration website — complete 
 ## 📷 Demo Preview
 
 You can view a working example here:  
-👉 
+👉 [https://randillasith.github.io/birthday-bliss/](https://randillasith.github.io/birthday-bliss/)
 
 ---
 
