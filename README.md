@@ -51,7 +51,7 @@ A beautiful, interactive, and magical birthday celebration website — complete 
 ## 📷 Demo Preview
 
 You can view a working example here:  
-👉 [https://randillasith.myddns.me/](https://randillasith.myddns.me/)
+👉 [https://birthday-bliss.ddns.net/](https://birthday-bliss.ddns.net/)
 
 ---
 
